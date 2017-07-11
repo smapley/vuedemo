@@ -93,8 +93,13 @@ public class BaseDao<T extends BaseEntity> implements IBaseDao<T> {
 
     @Override
     public List<T> getList(String params) {
+        if(StringUtils.isEmpty(params)){
+            params="";
+        }else{
+            params+=" AND ";
+        }
         return getSession().createQuery(//
-                "FROM " + clazz.getSimpleName() + " WHERE 1 = 1 AND" + params)//
+                "FROM " + clazz.getSimpleName() + " WHERE 1 = 1 " + params)//
                 .list();
     }
 }

@@ -5,6 +5,7 @@ import com.smapley.web.platform.base.response.BaseResponse;
 import com.smapley.web.platform.base.response.ResponseType;
 import com.smapley.web.platform.base.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -21,8 +22,14 @@ public class BaseController<T extends BaseEntity> {
 
 
     @RequestMapping("save")
-    public BaseResponse save(T entity) {
+    public BaseResponse save(@RequestBody T entity) {
         getService().save(entity);
+        return baseResponse();
+    }
+
+    @RequestMapping("delete")
+    public BaseResponse delete(@RequestBody T entity){
+        getService().delete(entity);
         return baseResponse();
     }
 
