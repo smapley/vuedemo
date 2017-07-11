@@ -1,6 +1,7 @@
 package com.smapley.web.platform.base.controller;
 
 import com.smapley.web.platform.base.entity.BaseEntity;
+import com.smapley.web.platform.base.entity.SimpleEntity;
 import com.smapley.web.platform.base.response.BaseResponse;
 import com.smapley.web.platform.base.response.ResponseType;
 import com.smapley.web.platform.base.service.IBaseService;
@@ -21,22 +22,22 @@ public class BaseController<T extends BaseEntity> {
     }
 
 
-    @RequestMapping("save")
-    public BaseResponse save(@RequestBody T entity) {
-        getService().save(entity);
+    @RequestMapping("saveOrUpdate")
+    public BaseResponse saveOrUpdate(@RequestBody T entity) {
+        getService().saveOrUpdate(entity);
         return baseResponse();
     }
 
     @RequestMapping("delete")
-    public BaseResponse delete(@RequestBody T entity){
+    public BaseResponse delete(@RequestBody T entity) {
         getService().delete(entity);
         return baseResponse();
     }
 
 
-    @RequestMapping("getList")
-    public BaseResponse getList(String params) {
-        return baseResponse(getService().getList(params));
+    @RequestMapping("getListByName")
+    public BaseResponse getListByName(@RequestBody SimpleEntity entity) {
+        return baseResponse(getService().getListByName(entity.getName()));
     }
 
     @RequestMapping("getAll")

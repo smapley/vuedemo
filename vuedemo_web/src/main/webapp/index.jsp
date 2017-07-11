@@ -19,7 +19,7 @@
             <a href="grid.jsp">表格</a>
         </li>
         <li>
-            <a href="demo.jsp">demo</a>
+            <a href="svg.jsp">图表</a>
         </li>
     </ul>
 </body>

@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=GB2312" %>
 <html>
-<link rel="stylesheet" href="static/css/index.css">
+<link rel="stylesheet" href="static/css/tree.css">
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 <script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>

@@ -3,6 +3,7 @@ package com.smapley.web.platform.base.service.impl;
 import com.smapley.web.platform.base.dao.IBaseDao;
 import com.smapley.web.platform.base.entity.BaseEntity;
 import com.smapley.web.platform.base.service.IBaseService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -35,11 +36,18 @@ public class BaseService<T extends BaseEntity> implements IBaseService<T> {
         baseDao.update(entity);
     }
 
+    public void saveOrUpdate(T entity) {
+        if (StringUtils.isEmpty(entity.getId())) {
+            getDao().save(entity);
+        } else {
+            getDao().update(entity);
+        }
+    }
+
     public T getById(String id) {
         return baseDao.getById(id);
     }
 
-    @Override
     public T getByName(String name) {
         return baseDao.getByName(name);
     }
@@ -53,7 +61,7 @@ public class BaseService<T extends BaseEntity> implements IBaseService<T> {
     }
 
     @Override
-    public List<T> getList(String params) {
-        return baseDao.getList(params);
+    public List<T> getListByName(String name) {
+        return baseDao.getListByName(name);
     }
 }

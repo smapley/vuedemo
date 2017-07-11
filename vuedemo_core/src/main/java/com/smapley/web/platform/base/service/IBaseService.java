@@ -17,6 +17,8 @@ public interface IBaseService<T extends BaseEntity> {
 
     void update(T entity);
 
+    void saveOrUpdate(T entity);
+
     T getById(String id);
 
     T getByName(String name);
@@ -25,5 +27,5 @@ public interface IBaseService<T extends BaseEntity> {
 
     List<T> getAll();
 
-    List<T> getList(String params);
+    List<T> getListByName(String name);
 }

@@ -92,14 +92,13 @@ public class BaseDao<T extends BaseEntity> implements IBaseDao<T> {
     }
 
     @Override
-    public List<T> getList(String params) {
-        if(StringUtils.isEmpty(params)){
-            params="";
-        }else{
-            params+=" AND ";
+    public List<T> getListByName(String name) {
+        if (StringUtils.isEmpty(name)) {
+            name = "";
         }
         return getSession().createQuery(//
-                "FROM " + clazz.getSimpleName() + " WHERE 1 = 1 " + params)//
+                "FROM " + clazz.getSimpleName() + " WHERE name LIKE (:name)")//
+                .setParameter("name", "%" + name + "%")
                 .list();
     }
 }

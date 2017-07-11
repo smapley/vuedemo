@@ -21,6 +21,11 @@
 
 <template id="grid-template">
     <div class="container">
+        <label>名称：</label>
+        <input type="text" v-model="name"/>
+        <button @click="search()">查询</button>
+        <button @click="reset()">重置</button>
+        <br/>
         <button @click="openNewItemDialog('添加')">添加</button>
         <table>
             <thead>
@@ -42,7 +47,7 @@
                     {{entry[title.key]}}
                 </td>
                 <td>
-                    <button @click="openEditItemDialog(entry.id)">修改</button>
+                    <button @click="openEditItemDialog(entry)">修改</button>
                     <button @click="deleteItem(entry.id)">删除</button>
                 </td>
             </tr>
@@ -54,13 +59,14 @@
                :item="item">
             <div slot="body">
                 <table class="form_table">
+                    <tr><input type="hidden" v-model="item['id']"/></tr>
                     <tr>
                         <td><label>名称</label></td>
-                        <td><input type="text" v-model="item['name']" /></td>
+                        <td><input type="text" v-model="item['name']"/></td>
                     </tr>
                     <tr>
                         <td><label>作者</label></td>
-                        <td><input type="text" v-model="item['author']" /></td>
+                        <td><input type="text" v-model="item['author']"/></td>
                     </tr>
                 </table>
             </div>
@@ -107,7 +113,7 @@
             },
             save: function () {
                 var vm = this
-                axios.post('book/save.do', this.item)
+                axios.post('book/saveOrUpdate.do', this.item)
                     .then(function (response) {
                         vm.$emit('close');
                     })
@@ -130,6 +136,7 @@
                 sortOrders[entity.key] = 1
             });
             return {
+                name: '',
                 columns: columns,
                 data: [],
                 sortKey: '',
@@ -181,14 +188,24 @@
         methods: {
             getData: function () {
                 var vm = this
-                axios.get('book/getList.do')
-                    .then(function (response) {
-                        vm.data = response.data.data;
-                    });
+                axios.post('book/getListByName.do', {
+                    name: vm.name
+                }).then(function (response) {
+                    vm.data = response.data.data;
+                }).catch(function (error) {
+                    alert('操作失败！');
+                });
             },
             sortBy: function (key) {
                 this.sortKey = key
                 this.sortOrders[key] = this.sortOrders[key] * -1
+            },
+            search: function () {
+                this.getData();
+            },
+            reset: function () {
+                this.name = "";
+                this.getData();
             },
             openNewItemDialog: function (title) {
                 this.title = title;
@@ -196,12 +213,10 @@
                 this.item = {};
                 this.showAdd = true;
             },
-            openEditItemDialog: function (key) {
-                debugger
-                var currentItem = this.findItemByKey(key)
-                this.title = '修改 - ' + key
+            openEditItemDialog: function (item) {
+                this.title = '修改';
                 this.mode = 2;
-                this.item = this.initItemForUpdate(currentItem)
+                this.item = item;
                 this.showAdd = true;
             },
             deleteItem: function (key) {
